@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Worklog Ledger PoC",
+  "version": "0.0.1",
+  "description": "Session-reuse auth PoC: calls Jira Cloud REST with the user's existing browser session.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["https://*.atlassian.net/*"],
+  "permissions": ["storage"]
+}

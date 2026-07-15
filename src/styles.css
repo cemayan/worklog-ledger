@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #172b4d;
+  background: #fff;
+}
+
+button {
+  font: inherit;
+  padding: 6px 12px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  background: #f4f5f7;
+  cursor: pointer;
+}
+
+button.primary {
+  background: #0052cc;
+  border-color: #0052cc;
+  color: #fff;
+}
+
+input {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+}
+
+.error {
+  color: #ae2a19;
+  background: #ffedeb;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 8px 0;
+}
+
+/* Popup */
+.popup {
+  width: 320px;
+  padding: 14px;
+}
+
+.popup h1 {
+  font-size: 15px;
+  margin: 0 0 10px;
+}
+
+.popup .status {
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+/* App */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+.app header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.app header h1 {
+  font-size: 18px;
+  margin: 0;
+  margin-right: auto;
+}
+
+.week-range {
+  font-variant-numeric: tabular-nums;
+  min-width: 180px;
+  text-align: center;
+}
+
+.setup {
+  max-width: 420px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day {
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.day.today {
+  border-color: #0052cc;
+}
+
+.day-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f4f5f7;
+  border-radius: 6px 6px 0 0;
+}
+
+.day-total {
+  color: #5e6c84;
+  font-weight: 400;
+}
+
+.entry {
+  margin: 4px 6px 0;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #e9f2ff;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.entry .key {
+  font-weight: 600;
+}
+
+.entry .time {
+  float: right;
+  color: #5e6c84;
+}
+
+.week-total {
+  margin-top: 12px;
+  font-weight: 600;
+}

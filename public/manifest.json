@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Worklog Ledger for Jira",
+  "version": "0.1.0",
+  "description": "Fast weekly worklog calendar for Jira Cloud, plus client-ready billing reports. No server — your data stays in your browser.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["https://*.atlassian.net/*"],
+  "permissions": ["storage"]
+}

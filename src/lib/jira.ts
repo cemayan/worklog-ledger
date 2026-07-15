@@ -98,6 +98,51 @@ export async function searchMyWorklogIssues(from: string, to: string): Promise<I
   return issues;
 }
 
+export interface PickedIssue {
+  key: string;
+  summaryText: string;
+}
+
+/** Issue autocomplete backing the add-worklog dialog. */
+export async function pickIssues(query: string): Promise<PickedIssue[]> {
+  const params = new URLSearchParams({ query, showSubTasks: 'true' });
+  const data = await jiraFetch<{ sections: { issues: PickedIssue[] }[] }>(
+    `/rest/api/3/issue/picker?${params}`,
+  );
+  const seen = new Set<string>();
+  const out: PickedIssue[] = [];
+  for (const section of data.sections) {
+    for (const issue of section.issues) {
+      if (!seen.has(issue.key)) {
+        seen.add(issue.key);
+        out.push(issue);
+      }
+    }
+  }
+  return out.slice(0, 10);
+}
+
+export async function addWorklog(
+  issueKey: string,
+  started: string,
+  timeSpentSeconds: number,
+  comment?: string,
+): Promise<Worklog> {
+  const body: Record<string, unknown> = { started, timeSpentSeconds };
+  const text = comment?.trim();
+  if (text) {
+    body.comment = {
+      type: 'doc',
+      version: 1,
+      content: [{ type: 'paragraph', content: [{ type: 'text', text }] }],
+    };
+  }
+  return jiraFetch<Worklog>(`/rest/api/3/issue/${issueKey}/worklog`, {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}
+
 /** All worklogs on an issue started within [afterMs, beforeMs). */
 export async function issueWorklogs(issueKey: string, afterMs: number, beforeMs: number): Promise<Worklog[]> {
   const params = new URLSearchParams({

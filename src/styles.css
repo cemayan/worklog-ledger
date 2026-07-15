@@ -144,3 +144,150 @@ input {
   margin-top: 12px;
   font-weight: 600;
 }
+
+.entry.draft {
+  background: #fff7d6;
+  position: relative;
+}
+
+.entry.draft.failed {
+  background: #ffedeb;
+}
+
+.entry .remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  border: none;
+  background: none;
+  padding: 0 4px;
+  font-size: 13px;
+  color: #5e6c84;
+}
+
+.entry .remove:hover {
+  color: #ae2a19;
+}
+
+.entry.draft .time {
+  margin-right: 14px;
+}
+
+.entry-error {
+  color: #ae2a19;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.day-add {
+  margin: auto 6px 6px;
+  border-style: dashed;
+  background: none;
+  color: #5e6c84;
+  font-size: 12px;
+  padding: 4px;
+}
+
+.day-add:hover {
+  color: #0052cc;
+  border-color: #0052cc;
+}
+
+.pushbar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: #172b4d;
+  color: #fff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Add-worklog dialog */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 30, 66, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+}
+
+.dialog {
+  background: #fff;
+  border-radius: 8px;
+  padding: 18px;
+  width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dialog h2 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #5e6c84;
+  flex: 1;
+}
+
+.dialog .row {
+  display: flex;
+  gap: 10px;
+}
+
+.dialog .row.end {
+  justify-content: flex-end;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.result {
+  text-align: left;
+  border: none;
+  border-radius: 0;
+  background: none;
+  padding: 7px 10px;
+  font-size: 13px;
+}
+
+.result:hover {
+  background: #e9f2ff;
+}
+
+.chosen {
+  background: #e9f2ff;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.key {
+  font-weight: 600;
+}
+
+button.link {
+  border: none;
+  background: none;
+  color: #0052cc;
+  padding: 0 0 0 8px;
+  text-decoration: underline;
+}

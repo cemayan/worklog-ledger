@@ -1,7 +1,18 @@
 import { useEffect, useState } from 'preact/hooks';
-import { myself, searchMyWorklogIssues, issueWorklogs, JiraAuthError, type Myself, type Worklog, type IssueRef } from '../lib/jira';
+import {
+  myself,
+  searchMyWorklogIssues,
+  issueWorklogs,
+  addWorklog,
+  JiraAuthError,
+  type Myself,
+  type Worklog,
+  type IssueRef,
+} from '../lib/jira';
 import { getSettings, saveSettings, normalizeSiteUrl } from '../lib/settings';
+import { getDrafts, setDrafts, toJiraStarted, type Draft } from '../lib/drafts';
 import { startOfWeek, addDays, isoDate, formatSeconds } from '../lib/week';
+import { AddWorklogDialog } from './AddWorklogDialog';
 
 interface Entry {
   worklog: Worklog;
@@ -71,10 +82,15 @@ export function App() {
   const [me, setMe] = useState<Myself>();
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [days, setDays] = useState<DayMap>();
+  const [drafts, setDraftsState] = useState<Draft[]>([]);
+  const [dialogDate, setDialogDate] = useState<string>();
+  const [pushing, setPushing] = useState(false);
   const [error, setError] = useState<string>();
+  const [reloadTick, setReloadTick] = useState(0);
 
   useEffect(() => {
     getSettings().then((s) => setReady(Boolean(s.site)));
+    getDrafts().then(setDraftsState);
   }, []);
 
   useEffect(() => {
@@ -90,12 +106,35 @@ export function App() {
         setError(e instanceof JiraAuthError ? e.message : (e as Error).message);
       }
     })();
-  }, [ready, weekStart]);
+  }, [ready, weekStart, reloadTick]);
+
+  const updateDrafts = async (next: Draft[]) => {
+    setDraftsState(next);
+    await setDrafts(next);
+  };
+
+  const pushAll = async () => {
+    setPushing(true);
+    const remaining: Draft[] = [];
+    let pushed = 0;
+    for (const draft of drafts) {
+      try {
+        await addWorklog(draft.issueKey, toJiraStarted(draft.date, draft.time), draft.seconds, draft.comment);
+        pushed++;
+      } catch (e) {
+        remaining.push({ ...draft, status: 'error', error: (e as Error).message });
+      }
+    }
+    await updateDrafts(remaining);
+    setPushing(false);
+    if (pushed) setReloadTick((t) => t + 1);
+  };
 
   if (ready === undefined) return null;
   if (!ready) return <Setup onDone={() => setReady(true)} />;
 
   const today = isoDate(new Date());
+  const failed = drafts.filter((d) => d.status === 'error');
   const weekTotal = days
     ? [...days.values()].flat().reduce((sum, e) => sum + e.worklog.timeSpentSeconds, 0)
     : 0;
@@ -120,7 +159,10 @@ export function App() {
         <>
           <div class="grid">
             {[...days.entries()].map(([date, entries]) => {
-              const total = entries.reduce((sum, e) => sum + e.worklog.timeSpentSeconds, 0);
+              const dayDrafts = drafts.filter((d) => d.date === date);
+              const total =
+                entries.reduce((sum, e) => sum + e.worklog.timeSpentSeconds, 0) +
+                dayDrafts.reduce((sum, d) => sum + d.seconds, 0);
               return (
                 <div class={`day${date === today ? ' today' : ''}`} key={date}>
                   <div class="day-head">
@@ -134,12 +176,48 @@ export function App() {
                       <div>{e.issue.summary}</div>
                     </div>
                   ))}
+                  {dayDrafts.map((d) => (
+                    <div class={`entry draft${d.status === 'error' ? ' failed' : ''}`} key={d.id}>
+                      <button
+                        class="remove"
+                        title="Remove staged worklog"
+                        onClick={() => updateDrafts(drafts.filter((x) => x.id !== d.id))}
+                      >
+                        ×
+                      </button>
+                      <span class="time">{formatSeconds(d.seconds)}</span>
+                      <span class="key">{d.issueKey}</span>
+                      <div>{d.summary}</div>
+                      {d.error && <div class="entry-error">{d.error}</div>}
+                    </div>
+                  ))}
+                  <button class="day-add" onClick={() => setDialogDate(date)}>+ Log work</button>
                 </div>
               );
             })}
           </div>
           <div class="week-total">Week total: {formatSeconds(weekTotal)}</div>
         </>
+      )}
+
+      {drafts.length > 0 && (
+        <div class="pushbar">
+          <span>
+            {drafts.length} staged worklog{drafts.length > 1 ? 's' : ''}
+            {failed.length > 0 && ` — ${failed.length} failed, fix or remove and retry`}
+          </span>
+          <button class="primary" disabled={pushing} onClick={pushAll}>
+            {pushing ? 'Pushing…' : 'Push to Jira'}
+          </button>
+        </div>
+      )}
+
+      {dialogDate && (
+        <AddWorklogDialog
+          date={dialogDate}
+          onClose={() => setDialogDate(undefined)}
+          onAdd={(draft) => updateDrafts([...drafts, draft])}
+        />
       )}
     </div>
   );

@@ -54,9 +54,21 @@ Working plan for the 2-week MVP. Check items off as they land.
       shared in chat)
 - [x] Publish site/ to GitHub Pages (gh-pages branch) — live at
       https://cemayan.com/worklog-ledger/ (privacy: /worklog-ledger/privacy.html)
-- [ ] Fill support email in privacy.html + listing before CWS submit
-- [ ] Screenshots 1280×800 for CWS (calendar light/dark, report, export)
-- [ ] Submit to CWS early (manual review can take 3+ weeks)
+- [x] Support email: support@cemayan.com (iCloud+ alias), on site + listing
+- [x] Screenshots 1280×800 (calendar light/dark, report light/dark)
+- [x] SUBMITTED to Chrome Web Store for review — 2026-07-19, v0.1.0, developer
+      account under the new product Gmail; Search Console domain verified.
+      Review may take days to 3+ weeks.
+
+## While waiting for review (launch prep)
+
+- [ ] Distribution hit list: unanswered "worklog report/export" questions on
+      Atlassian Community; complaint threads in Jira Assistant GitHub issues
+      (#426 silent upload, Tempo gap 2026-07-02, keyboard UX 2026-02) — draft
+      helpful replies to post once the store link exists
+- [ ] "Tempo alternative for agencies" comparison post (SEO) for the landing site
+- [ ] Real-money checkout smoke test with a 100% discount code once live
+- [ ] Wire Paddle customer portal link (cancel/manage) into site footer or FAQ
 
 ## Later (post-MVP, sales-driven)
 

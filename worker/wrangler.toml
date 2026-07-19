@@ -6,7 +6,7 @@ compatibility_date = "2026-07-19"
 # then paste the generated id below.
 [[kv_namespaces]]
 binding = "LICENSES"
-id = "TODO"
+id = "b8e7ef2af5fc45efba0b00995e8f2a3e"
 
 [vars]
 # Use https://sandbox-api.paddle.com while testing.

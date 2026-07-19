@@ -35,7 +35,10 @@
     .cta {
       display: inline-block; background: var(--accent); color: #fff; font-weight: 600;
       padding: 12px 22px; border-radius: 10px; text-decoration: none; margin-bottom: 48px;
+      border: none; font-size: 15px; cursor: pointer;
     }
+    .cta:disabled { opacity: 0.55; cursor: default; }
+    .card .cta { margin: 10px 0 6px; padding: 9px 16px; font-size: 14px; }
     h2 { font-size: 20px; margin: 40px 0 12px; }
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
     .card {
@@ -116,10 +119,27 @@
         <h3>Report plan — $7/month</h3>
         <p>Per reporting seat. Client &amp; rate mapping, grouped summaries, invoice-ready CSV
           export. 14-day full trial, cancel anytime.</p>
-        <!-- TODO: Paddle checkout button (client token + price id) after account approval -->
-        <p><em>Checkout opens with the public launch.</em></p>
+        <button class="cta" id="buy" disabled>Subscribe — $7/month</button>
+        <p id="buy-note"><em>Checkout opens with the public launch.</em></p>
       </div>
     </div>
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script>
+      // TODO: paste the client-side token (Paddle > Developer tools > Authentication
+      // > Client-side tokens) and the checkout goes live.
+      var PADDLE_CLIENT_TOKEN = 'live_TODO';
+      var PRICE_ID = 'pri_01kxxsjc7t1yjgjzdq25ms4wg4';
+      if (PADDLE_CLIENT_TOKEN.indexOf('TODO') === -1 && window.Paddle) {
+        Paddle.Initialize({ token: PADDLE_CLIENT_TOKEN });
+        var btn = document.getElementById('buy');
+        btn.disabled = false;
+        document.getElementById('buy-note').style.display = 'none';
+        btn.addEventListener('click', function () {
+          Paddle.Checkout.open({ items: [{ priceId: PRICE_ID, quantity: 1 }] });
+        });
+      }
+    </script>
 
     <footer>
       <a href="privacy.html">Privacy policy</a> · Worklog Ledger is an independent product and is

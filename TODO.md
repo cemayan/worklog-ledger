@@ -42,9 +42,16 @@ Working plan for the 2-week MVP. Check items off as they land.
       wire payouts, no Stripe/PayPal needed). ExtensionPay/extpay removed; licensing
       is now email-activation against a Cloudflare Worker (`worker/`) fed by Paddle
       webhooks. Trial logic unchanged.
-- [ ] Paddle: finish seller onboarding (in progress), create $7/mo product, then:
-      deploy worker (see worker/README.md), set LICENSE_API in src/lib/license.ts,
-      wire Paddle.js checkout into site pricing section
+- [x] Paddle live wired: product pro_01kxxsjbrk7nz29h514ae4d3nb, price
+      pri_01kxxsjc7t1yjgjzdq25ms4wg4 ($7/mo), webhook ntfset_01kxxsss6v9m43bmnr773mpeae.
+      Worker deployed at https://worklog-ledger-license.cemayan.workers.dev with
+      KV + both secrets; LICENSE_API already points there.
+- [ ] Paddle: finish seller verification (KYC + website approval) — checkout won't
+      charge until Paddle approves the account
+- [ ] Paste the client-side token (Developer tools > Authentication > Client-side
+      tokens) into site/index.html PADDLE_CLIENT_TOKEN to enable the buy button
+- [ ] Rotate the Paddle API key and the account password after setup (both were
+      shared in chat)
 - [x] Publish site/ to GitHub Pages (gh-pages branch) — live at
       https://cemayan.com/worklog-ledger/ (privacy: /worklog-ledger/privacy.html)
 - [ ] Fill support email in privacy.html + listing before CWS submit

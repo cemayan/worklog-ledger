@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to export Jira worklogs to CSV or Excel — 3 ways that actually work (2026)</title>
+  <meta name="description" content="Jira can't export individual worklog entries natively. Three working approaches: the built-in issue export (and its limits), a REST API script with code, and timesheet apps or extensions." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --muted: #667085; --accent: #2563eb; --border: #e4e7ec; --code-bg: #f4f5f7;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --muted: #98a2b3; --accent: #4f8cff; --border: #272e3a; --code-bg: #1e242e; }
+    }
+    body {
+      margin: 0 auto; max-width: 760px; padding: 48px 24px 80px;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65;
+    }
+    h1 { letter-spacing: -0.02em; line-height: 1.25; }
+    h2 { font-size: 20px; margin-top: 36px; }
+    .meta { color: var(--muted); font-size: 14px; }
+    a { color: var(--accent); }
+    pre {
+      background: var(--code-bg); border-radius: 8px; padding: 14px;
+      overflow-x: auto; font-size: 13px; line-height: 1.5;
+    }
+    code { font-size: 0.92em; }
+    .cta-box { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <h1>How to export Jira worklogs to CSV or Excel — 3 ways that actually work</h1>
+  <p class="meta">Written by the developer of <a href="index.html">Worklog Ledger</a> — option 3 includes our own tool, disclosed where it appears.</p>
+
+  <p>
+    The frustrating part first, so the rest makes sense: <strong>Jira Cloud has no native export of
+    individual worklog entries.</strong> Issue search exports <em>issues</em> with an aggregate
+    "Time Spent" column — not who logged what on which day. And JQL's <code>worklogDate</code>
+    filters which <em>issues</em> match; it does not slice the entries inside them. So "all worklog
+    entries for March, per person" is simply not a thing the Jira UI can hand you. Here's what
+    works instead.
+  </p>
+
+  <h2>Way 1 — Native issue export (good enough for rough totals)</h2>
+  <p>
+    If per-issue totals are enough (no dates, no per-person split), the built-in export works:
+    Filters → search with
+    <code>worklogDate &gt;= "2026-03-01" AND worklogDate &lt;= "2026-03-31"</code> → add the
+    <strong>Time Spent</strong> column → Export → CSV/Excel. Two caveats: the Time Spent number is
+    the issue's <em>lifetime</em> logged time, not just March; and entries by different people are
+    merged. Fine for a sanity check, wrong for an invoice.
+  </p>
+
+  <h2>Way 2 — The REST API (exact, but you maintain a script)</h2>
+  <p>
+    The API returns real entries. The recipe: find issues touched in the range, then pull each
+    issue's worklogs and filter by date and author. A minimal working Python example:
+  </p>
+  <pre><code>import requests, csv
+from requests.auth import HTTPBasicAuth
+
+SITE = "https://your-site.atlassian.net"
+AUTH = HTTPBasicAuth("you@company.com", "YOUR_API_TOKEN")  # id.atlassian.com > API tokens
+JQL = 'worklogDate >= "2026-03-01" AND worklogDate <= "2026-03-31"'
+
+issues, token = [], None
+while True:
+    params = {"jql": JQL, "fields": "summary", "maxResults": 100}
+    if token: params["nextPageToken"] = token
+    page = requests.get(f"{SITE}/rest/api/3/search/jql", params=params, auth=AUTH).json()
+    issues += page["issues"]
+    token = page.get("nextPageToken")
+    if not token: break
+
+rows = []
+for issue in issues:
+    data = requests.get(f"{SITE}/rest/api/3/issue/{issue['key']}/worklog",
+                        params={"maxResults": 1000}, auth=AUTH).json()
+    for w in data["worklogs"]:
+        day = w["started"][:10]
+        if "2026-03-01" <= day <= "2026-03-31":
+            rows.append([day, w["author"]["displayName"], issue["key"],
+                         issue["fields"]["summary"], w["timeSpentSeconds"] / 3600])
+
+with open("worklogs.csv", "w", newline="") as f:
+    csv.writer(f).writerows([["Date", "Person", "Issue", "Summary", "Hours"], *rows])</code></pre>
+  <p>
+    This is exact and free. The costs are operational: the script lives on one person's machine,
+    API tokens expire (max one year now), rates and client mappings live in a second spreadsheet,
+    and when Atlassian changes an endpoint (the old <code>/search</code> → <code>/search/jql</code>
+    migration broke a lot of scripts) it's your morning that goes to fixing it.
+  </p>
+
+  <h2>Way 3 — Timesheet apps and extensions (recurring use)</h2>
+  <p>
+    If this is a monthly ritual, tooling beats scripts. Two flavors:
+  </p>
+  <p>
+    <strong>Marketplace timesheet apps</strong> (Tempo, Clockwork, Worklog360…) install into the
+    Jira site — an admin approves them, pricing is per Jira user, and in exchange you get mature
+    reporting UIs. We compared them in detail in
+    <a href="tempo-alternative-for-agencies.html">this guide</a>.
+  </p>
+  <p>
+    <strong>Browser extensions</strong> skip the admin entirely because they run with your own
+    login. Disclosure — this is our product: <a href="index.html">Worklog Ledger</a> pulls
+    entry-level worklogs for any date range, lets you map projects to clients with hourly rates and
+    billable flags, and exports an invoice-ready CSV (hours × rate, totals row, opens clean in
+    Excel). The free tier is a weekly worklog calendar; the report/export layer is $7/month for the
+    person running reports. No backend — your worklog data stays in your browser, and the code is
+    <a href="https://github.com/cemayan/worklog-ledger">open source</a>.
+  </p>
+
+  <h2>Which way?</h2>
+  <p>
+    One-off rough totals: Way 1. One-off exact export and you're comfortable with an API token:
+    Way 2. Monthly invoicing, approvals-heavy Jira, or a non-technical person running it: Way 3 —
+    a Marketplace app if you have admin rights and budget for every user, an extension if you
+    don't.
+  </p>
+
+  <div class="cta-box">
+    <strong>Worklog Ledger for Jira</strong> — free weekly worklog calendar, invoice-ready CSV
+    export for $7/month per reporting seat. 14-day full trial.
+    <a href="index.html#pricing">See pricing →</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jira time tracking for agencies — what Jira can and can't do natively (2026)</title>
+  <meta name="description" content="A clear map of Jira Cloud's built-in time tracking: what worklogs, estimates and reports give you out of the box, where the native features stop, and what to add only when you actually need it." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --muted: #667085; --accent: #2563eb; --border: #e4e7ec; --ok: #12b76a; --no: #d92d20;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --muted: #98a2b3; --accent: #4f8cff; --border: #272e3a; --ok: #2ecc8f; --no: #f97066; }
+    }
+    body {
+      margin: 0 auto; max-width: 760px; padding: 48px 24px 80px;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65;
+    }
+    h1 { letter-spacing: -0.02em; line-height: 1.25; }
+    h2 { font-size: 20px; margin-top: 36px; }
+    .meta { color: var(--muted); font-size: 14px; }
+    a { color: var(--accent); }
+    ul.can li::marker { color: var(--ok); }
+    ul.cant li::marker { color: var(--no); }
+    .cta-box { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <h1>Jira time tracking for agencies: what's built in, what isn't</h1>
+  <p class="meta">Written by the developer of <a href="index.html">Worklog Ledger</a>. The goal of this page is to save you a Marketplace subscription you might not need — and to be honest about when you do need one.</p>
+
+  <p>
+    Agencies adopting Jira for client work usually assume time tracking is a solved problem —
+    it's a project management tool, after all. The truth is more specific: <strong>Jira is good at
+    capturing time and bad at doing anything financial with it.</strong> Here's the exact line.
+  </p>
+
+  <h2>What native Jira time tracking gives you</h2>
+  <ul class="can">
+    <li><strong>Worklogs on every issue.</strong> Anyone can log time (duration, start time, a
+      comment) on any issue — the "Log work" action. Entries are per-person and timestamped.</li>
+    <li><strong>Estimates and remaining time.</strong> Original estimate vs. time spent vs.
+      remaining, visible on the issue and burned down in sprints.</li>
+    <li><strong>The Time Tracking report.</strong> Per-project, per-version aggregate of estimates
+      vs. logged time — useful for delivery health, not billing.</li>
+    <li><strong>JQL's <code>worklogDate</code> and <code>worklogAuthor</code>.</strong> You can find
+      <em>issues</em> that someone logged time on in a date range.</li>
+    <li><strong>A REST API that exposes everything.</strong> Every worklog entry is retrievable
+      programmatically — this is the escape hatch all the tools build on.</li>
+  </ul>
+
+  <h2>Where it stops</h2>
+  <ul class="cant">
+    <li><strong>No entry-level reporting.</strong> JQL filters issues, not entries. "All hours
+      logged in March, per person, per client" doesn't exist in the UI.</li>
+    <li><strong>No worklog export.</strong> Issue search exports lifetime "Time Spent" per issue —
+      not the entries, not sliced by your date range.</li>
+    <li><strong>No concept of a client.</strong> Projects, components and labels exist; "which
+      client pays for this" doesn't. You end up encoding it in project naming conventions.</li>
+    <li><strong>No rates, no billable flag.</strong> Nothing in Jira knows an hour of senior time
+      costs more than an hour of standups — or that standups aren't billed at all.</li>
+    <li><strong>No timesheet view.</strong> There's no "my week" grid to review or fill; logging
+      happens issue by issue, which is why entries are chronically missing.</li>
+  </ul>
+
+  <h2>The pragmatic setup for a billing agency</h2>
+  <p>
+    <strong>1. Make logging cheap.</strong> Unlogged hours are unbilled hours — the biggest leak
+    isn't your tooling, it's Thursday's forgotten afternoon. Whatever you adopt, the weekly
+    calendar view (see, gap, fill) beats issue-by-issue logging.
+  </p>
+  <p>
+    <strong>2. Map projects to clients once.</strong> One Jira project per client engagement is the
+    cleanest convention; the mapping then lives in whatever reporting layer you choose, not in
+    people's heads.
+  </p>
+  <p>
+    <strong>3. Add a reporting layer only for the people who bill.</strong> This is where the
+    options split by admin rights and budget — Marketplace timesheet apps (site-wide install,
+    per-user pricing) vs. API scripts vs. browser extensions. We compared them honestly in
+    <a href="tempo-alternative-for-agencies.html">this guide</a>, and if you just need a one-time
+    export there's <a href="export-jira-worklogs-to-csv.html">a working script here</a>.
+  </p>
+
+  <p>
+    Disclosure again: we built <a href="index.html">Worklog Ledger</a> for exactly this setup — a
+    free weekly worklog calendar that makes logging cheap, plus a billing layer (client mapping,
+    rates, invoice-ready CSV) priced per reporting seat instead of per Jira user, installed as a
+    browser extension so there's nothing for a Jira admin to approve.
+  </p>
+
+  <div class="cta-box">
+    <strong>Worklog Ledger for Jira</strong> — free weekly worklog calendar, billing reports with
+    invoice-ready CSV export for $7/month per reporting seat. 14-day full trial.
+    <a href="index.html#pricing">See pricing →</a>
+  </div>
+</body>
+</html>

@@ -46,12 +46,13 @@
     sends data anywhere.
   </p>
 
-  <h2>Payments</h2>
+  <h2>Payments &amp; license check</h2>
   <p>
-    Paid plans are handled by <a href="https://extensionpay.com">ExtensionPay</a> with checkout
-    by Stripe. If you upgrade, your email address and payment details are processed by those
-    services under their own privacy policies; the extension itself only learns whether your
-    account is paid.
+    Paid plans are sold by <a href="https://www.paddle.com">Paddle</a> as merchant of record;
+    your payment details are processed by Paddle under its own privacy policy. To unlock paid
+    features, the extension sends <strong>only the email address you used at checkout</strong>
+    to our license endpoint (a Cloudflare Worker) and receives back a yes/no subscription
+    status. No Jira data, tokens or usage information is ever included in that request.
   </p>
 
   <h2>Changes & contact</h2>

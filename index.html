@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Worklog Ledger for Jira — weekly worklog calendar & billing reports</title>
+  <meta name="description" content="Log work in a fast weekly calendar and turn Jira worklogs into client-ready billing reports. No server, no admin approval — your data stays in your browser." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f7f9; --surface: #fff; --border: #e4e7ec; --text: #1a2230;
+      --muted: #667085; --accent: #2563eb;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e1116; --surface: #161b22; --border: #272e3a; --text: #e7eaf0;
+        --muted: #98a2b3; --accent: #4f8cff;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; }
+    .logo {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, #2563eb, #8b5cf6);
+      display: flex; align-items: flex-end; justify-content: center; gap: 5px;
+      padding-bottom: 12px; margin-bottom: 24px;
+    }
+    .logo i { display: block; width: 7px; background: #fff; border-radius: 3px; }
+    h1 { font-size: 34px; letter-spacing: -0.02em; margin: 0 0 8px; }
+    .tagline { font-size: 19px; color: var(--muted); margin: 0 0 28px; }
+    .cta {
+      display: inline-block; background: var(--accent); color: #fff; font-weight: 600;
+      padding: 12px 22px; border-radius: 10px; text-decoration: none; margin-bottom: 48px;
+    }
+    h2 { font-size: 20px; margin: 40px 0 12px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 15px; }
+    .card p { margin: 0; font-size: 14px; color: var(--muted); }
+    footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 14px; color: var(--muted); }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="logo" aria-hidden="true"><i style="height:14px"></i><i style="height:24px"></i><i style="height:18px"></i></div>
+    <h1>Worklog Ledger for Jira</h1>
+    <p class="tagline">Log work in a fast weekly calendar and turn Jira worklogs into client-ready billing reports.</p>
+    <a class="cta" href="#">Add to Chrome — coming soon</a>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Weekly calendar</h3>
+        <p>Your worklogs on a Monday-to-Sunday grid. Add, edit, duplicate and delete entries without leaving the page. Copy last week in one click.</p>
+      </div>
+      <div class="card">
+        <h3>Review before upload</h3>
+        <p>New worklogs are staged locally first. Push them to Jira when you're ready — every failure is visible and retryable, nothing is lost silently.</p>
+      </div>
+      <div class="card">
+        <h3>Billing reports</h3>
+        <p>Pick a date range, map projects to clients, set hourly rates, and export an invoice-ready CSV — hours × rate, entry by entry.</p>
+      </div>
+      <div class="card">
+        <h3>No server, no admin</h3>
+        <p>Runs entirely in your browser against Jira's own REST API. No backend, no data collection, no Marketplace admin approval needed.</p>
+      </div>
+    </div>
+
+    <h2>How it works</h2>
+    <p>
+      Worklog Ledger uses your existing Jira Cloud browser session (or an API token you provide)
+      to read and write worklogs directly — the same way Jira's own UI does. Settings, client
+      mappings and rates are stored in your browser's extension storage. Nothing touches a
+      third-party server.
+    </p>
+
+    <h2>Pricing</h2>
+    <p>
+      The calendar is free, forever. Billing reports with rates and CSV export are part of the
+      paid plan after a 14-day full-featured trial. Only the person running the reports pays —
+      not every Jira user on your site.
+    </p>
+
+    <footer>
+      <a href="privacy.html">Privacy policy</a> · Worklog Ledger is an independent product and is
+      not affiliated with Atlassian. Jira is a trademark of Atlassian Corporation.
+    </footer>
+  </main>
+</body>
+</html>

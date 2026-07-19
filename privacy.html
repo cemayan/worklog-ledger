@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — Worklog Ledger for Jira</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0 auto; max-width: 720px; padding: 48px 24px 80px;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65;
+    }
+    h1 { letter-spacing: -0.02em; }
+    h2 { font-size: 18px; margin-top: 32px; }
+    code { font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p><em>Worklog Ledger for Jira — last updated 2026-07-19</em></p>
+
+  <p>
+    Worklog Ledger is built so that your data never leaves your browser except to talk to
+    services you already use. There is no Worklog Ledger server.
+  </p>
+
+  <h2>What the extension accesses</h2>
+  <ul>
+    <li><strong>Jira Cloud (<code>*.atlassian.net</code>):</strong> the extension calls Jira's
+      REST API from your browser to read and write worklogs, using your existing Jira session
+      or an API token you enter. Requests go directly from your browser to Atlassian —
+      never through any intermediary.</li>
+  </ul>
+
+  <h2>What the extension stores</h2>
+  <ul>
+    <li><strong>Locally in your browser</strong> (<code>chrome.storage</code>): your Jira site
+      URL, optional API token, display preferences, client/rate mappings, and worklogs you have
+      staged but not yet pushed. Synced storage may replicate settings across your own Chrome
+      profile via your Google account, as with any extension.</li>
+  </ul>
+
+  <h2>What we collect</h2>
+  <p>
+    Nothing. The extension contains no analytics, no tracking, and no error reporting that
+    sends data anywhere.
+  </p>
+
+  <h2>Payments</h2>
+  <p>
+    Paid plans are handled by <a href="https://extensionpay.com">ExtensionPay</a> with checkout
+    by Stripe. If you upgrade, your email address and payment details are processed by those
+    services under their own privacy policies; the extension itself only learns whether your
+    account is paid.
+  </p>
+
+  <h2>Changes & contact</h2>
+  <p>
+    Material changes to this policy will be noted in the extension's changelog.
+    Questions: <!-- TODO: support email before publishing --> see the support link on the
+    Chrome Web Store listing.
+  </p>
+</body>
+</html>

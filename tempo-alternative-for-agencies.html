@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tempo alternatives for agency billing — exporting Jira worklogs to invoices (2026)</title>
+  <meta name="description" content="Comparing the ways to turn Jira Cloud worklogs into client invoices: Tempo and Marketplace timesheet apps, the REST API, and browser extensions — costs, admin approval, and export options." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --muted: #667085; --accent: #2563eb; --border: #e4e7ec;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --muted: #98a2b3; --accent: #4f8cff; --border: #272e3a; }
+    }
+    body {
+      margin: 0 auto; max-width: 760px; padding: 48px 24px 80px;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65;
+    }
+    h1 { letter-spacing: -0.02em; line-height: 1.25; }
+    h2 { font-size: 20px; margin-top: 36px; }
+    .meta { color: var(--muted); font-size: 14px; }
+    table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 16px 0; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    .scroll { overflow-x: auto; }
+    a { color: var(--accent); }
+    .cta-box { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <h1>Turning Jira worklogs into client invoices: your real options in 2026</h1>
+  <p class="meta">Written by the developer of Worklog Ledger — so read the last option with that in mind. The comparison itself aims to be honest enough to be useful even if you pick something else.</p>
+
+  <p>
+    If your agency or consultancy bills clients from hours logged in Jira Cloud, you've hit the
+    wall: <strong>Jira cannot aggregate worklog entries for a date range natively</strong>.
+    JQL's <code>worklogDate</code> filters <em>issues</em>, not entries — you can find issues that
+    were worked on in March, but not "how many hours did we log for client X in March, entry by
+    entry, at what rate". Everyone solves this one of four ways.
+  </p>
+
+  <h2>1. Tempo Timesheets (and the heavyweight Marketplace class)</h2>
+  <p>
+    <a href="https://marketplace.atlassian.com/apps/6572/tempo-timesheets-jira-time-tracking">Tempo</a>
+    is the category king: approvals, plans, capacity, accounts, everything. Two structural costs.
+    First, <strong>pricing is per Jira user, site-wide</strong> — if your Jira has 200 users and 2
+    people run billing reports, you pay for 200. Second, it's a Marketplace app: an admin has to
+    install it, which on locked-down enterprise instances means procurement, security review, and
+    waiting. If your whole company standardizes on it, it's excellent. If you're a 5-person billing
+    team inside someone else's Jira, it's overkill you may not even be allowed to install.
+  </p>
+
+  <h2>2. Lighter Marketplace apps (Clockwork, Worklog360, JetTime…)</h2>
+  <p>
+    Cheaper per user, and some (like Clockwork's free tier) are genuinely good. The same two
+    structural properties remain though: admin installation, and pricing per Jira user rather than
+    per report consumer. Worth evaluating if you have admin rights and a cooperative site.
+  </p>
+
+  <h2>3. The Jira REST API and a script</h2>
+  <p>
+    <code>GET /rest/api/3/issue/{key}/worklog</code> returns real entries with authors, timestamps
+    and durations. A script that walks issues from a JQL search and aggregates entries into a CSV
+    is an afternoon of work — plus rate tables, plus maintenance every time the API or your client
+    mapping changes, plus "only Deniz can run the script". Fine for one-offs; brittle as a monthly
+    invoicing ritual.
+  </p>
+
+  <h2>4. A browser extension (what we built)</h2>
+  <p>
+    <a href="index.html">Worklog Ledger</a> takes a different trade: it runs in your own browser
+    with your existing Jira session, so <strong>there is nothing for an admin to approve</strong>
+    and nothing installed on the Jira site. The weekly worklog calendar is free. The billing layer —
+    project→client mapping, hourly rates, billable flags, grouped totals, invoice-ready CSV export —
+    is $7/month <strong>for the person running reports only</strong>, not per Jira user. Because it
+    talks directly to your own Jira site and has no backend, your worklog data never leaves your
+    browser; the extension is open source, so that claim is checkable.
+  </p>
+  <p>
+    The honest limits: it's Chrome-family browsers and Jira Cloud only (no Data Center yet), it
+    reads native Jira worklogs (Tempo-stored worklogs are on the roadmap), and it deliberately does
+    less than Tempo — no approvals, no capacity planning. It does the export-to-invoice job.
+  </p>
+
+  <h2>Side by side</h2>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th></th><th>Tempo</th><th>Lighter apps</th><th>API script</th><th>Worklog Ledger</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Admin approval needed</td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
+        <tr><td>Who pays</td><td>Every Jira user</td><td>Every Jira user</td><td>Dev time</td><td>Report users only</td></tr>
+        <tr><td>Entry-level date-range export</td><td>Yes</td><td>Varies</td><td>DIY</td><td>Yes (CSV)</td></tr>
+        <tr><td>Rates &amp; client mapping</td><td>Yes</td><td>Varies</td><td>DIY</td><td>Yes</td></tr>
+        <tr><td>Approvals / capacity planning</td><td>Yes</td><td>Some</td><td>No</td><td>No</td></tr>
+        <tr><td>Where your data goes</td><td>Vendor cloud</td><td>Vendor cloud</td><td>Your machine</td><td>Your browser</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Which one should you pick?</h2>
+  <p>
+    Company-wide time management with approvals and finance integrations: Tempo, budget permitting.
+    Admin rights and a modest budget: evaluate Clockwork. A one-time export: script it. A recurring
+    invoicing ritual inside a Jira you don't control, where only one or two people need the report:
+    that's the case we built <a href="index.html">Worklog Ledger</a> for.
+  </p>
+
+  <div class="cta-box">
+    <strong>Worklog Ledger for Jira</strong> — free weekly worklog calendar, billing reports with
+    invoice-ready CSV export for $7/month per reporting seat. 14-day full trial.
+    <a href="index.html#pricing">See pricing →</a>
+  </div>
+</body>
+</html>

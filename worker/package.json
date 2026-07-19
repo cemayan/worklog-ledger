@@ -1,0 +1,15 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker that bridges Paddle (merchant of record) and the extension. Free tier is more than enough: a few webhook calls per sale + one license check per user per week.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "wrangler": "^4.112.0"
+  }
+}

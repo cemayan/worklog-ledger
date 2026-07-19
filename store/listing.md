@@ -58,7 +58,8 @@ Works with Jira Cloud. Not affiliated with Atlassian.
 - [x] Privacy policy URL: https://worklogledger.cemayan.com/privacy.html
       (moved to dedicated subdomain after Paddle classified cemayan.com root as
       a personal blog)
-- [ ] Support email / site URL
+- [x] Support email: support@cemayan.com (iCloud+ custom domain alias)
+      Site URL: https://worklogledger.cemayan.com/
 
 ## Before submitting
 

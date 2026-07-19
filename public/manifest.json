@@ -4,8 +4,22 @@
   "version": "0.1.0",
   "description": "Fast weekly worklog calendar for Jira Cloud, plus client-ready billing reports. No server — your data stays in your browser.",
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
-  "host_permissions": ["https://*.atlassian.net/*"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "host_permissions": ["https://*.atlassian.net/*", "https://extensionpay.com/*"],
   "permissions": ["storage"]
 }

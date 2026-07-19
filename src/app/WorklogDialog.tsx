@@ -1,22 +1,40 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { pickIssues, type PickedIssue } from '../lib/jira';
 import { parseDuration } from '../lib/duration';
-import type { Draft } from '../lib/drafts';
+import { formatSeconds } from '../lib/week';
 
-interface Props {
-  date: string;
-  onClose: () => void;
-  onAdd: (draft: Draft) => void;
+export interface WorklogValues {
+  issueKey: string;
+  summary: string;
+  date: string; // yyyy-MM-dd
+  time: string; // HH:mm
+  seconds: number;
+  comment: string;
 }
 
-export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
+interface Props {
+  title: string;
+  submitLabel: string;
+  initial: Partial<WorklogValues> & { date: string };
+  /** Edit mode for an existing Jira worklog — the issue can't be changed. */
+  lockIssue?: boolean;
+  onClose: () => void;
+  /** May throw / reject — the dialog stays open and shows the error. */
+  onSubmit: (values: WorklogValues) => void | Promise<void>;
+}
+
+export function WorklogDialog({ title, submitLabel, initial, lockIssue, onClose, onSubmit }: Props) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PickedIssue[]>([]);
-  const [chosen, setChosen] = useState<PickedIssue>();
-  const [duration, setDuration] = useState('');
-  const [time, setTime] = useState('09:00');
-  const [comment, setComment] = useState('');
+  const [chosen, setChosen] = useState<PickedIssue | undefined>(
+    initial.issueKey ? { key: initial.issueKey, summaryText: initial.summary ?? '' } : undefined,
+  );
+  const [date, setDate] = useState(initial.date);
+  const [duration, setDuration] = useState(initial.seconds ? formatSeconds(initial.seconds) : '');
+  const [time, setTime] = useState(initial.time ?? '09:00');
+  const [comment, setComment] = useState(initial.comment ?? '');
   const [error, setError] = useState<string>();
+  const [saving, setSaving] = useState(false);
   const queryRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => queryRef.current?.focus(), []);
@@ -42,7 +60,7 @@ export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
     return () => clearTimeout(handle);
   }, [query, chosen]);
 
-  const submit = () => {
+  const submit = async () => {
     setError(undefined);
     if (!chosen) {
       setError('Pick an issue first.');
@@ -53,28 +71,34 @@ export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
       setError('Enter a duration like "1h 30m", "45m" or "2".');
       return;
     }
-    onAdd({
-      id: crypto.randomUUID(),
-      issueKey: chosen.key,
-      summary: chosen.summaryText,
-      date,
-      time,
-      seconds,
-      comment,
-      status: 'staged',
-    });
-    onClose();
+    setSaving(true);
+    try {
+      await onSubmit({
+        issueKey: chosen.key,
+        summary: chosen.summaryText,
+        date,
+        time,
+        seconds,
+        comment,
+      });
+      onClose();
+    } catch (e) {
+      setSaving(false);
+      setError((e as Error).message);
+    }
   };
 
   return (
     <div class="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div class="dialog">
-        <h2>Log work — {date}</h2>
+        <h2>{title}</h2>
 
         {chosen ? (
           <div class="chosen">
             <span class="key">{chosen.key}</span> {chosen.summaryText}
-            <button class="link" onClick={() => setChosen(undefined)}>change</button>
+            {!lockIssue && (
+              <button class="link" onClick={() => setChosen(undefined)}>change</button>
+            )}
           </div>
         ) : (
           <>
@@ -98,12 +122,11 @@ export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
 
         <div class="row">
           <label>
-            Duration
+            Date
             <input
-              placeholder="1h 30m"
-              value={duration}
-              onInput={(e) => setDuration((e.target as HTMLInputElement).value)}
-              onKeyDown={(e) => e.key === 'Enter' && submit()}
+              type="date"
+              value={date}
+              onInput={(e) => setDate((e.target as HTMLInputElement).value)}
             />
           </label>
           <label>
@@ -112,6 +135,15 @@ export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
               type="time"
               value={time}
               onInput={(e) => setTime((e.target as HTMLInputElement).value)}
+            />
+          </label>
+          <label>
+            Duration
+            <input
+              placeholder="1h 30m"
+              value={duration}
+              onInput={(e) => setDuration((e.target as HTMLInputElement).value)}
+              onKeyDown={(e) => e.key === 'Enter' && submit()}
             />
           </label>
         </div>
@@ -128,8 +160,10 @@ export function AddWorklogDialog({ date, onClose, onAdd }: Props) {
         {error && <div class="error">{error}</div>}
 
         <div class="row end">
-          <button onClick={onClose}>Cancel</button>
-          <button class="primary" onClick={submit}>Stage worklog</button>
+          <button onClick={onClose} disabled={saving}>Cancel</button>
+          <button class="primary" onClick={submit} disabled={saving}>
+            {saving ? 'Saving…' : submitLabel}
+          </button>
         </div>
       </div>
     </div>

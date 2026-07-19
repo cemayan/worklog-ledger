@@ -18,6 +18,13 @@ export function isoDate(d: Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+/** HH:mm local time of an ISO datetime. */
+export function timeOfDay(iso: string): string {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export function formatSeconds(total: number): string {
   const h = Math.floor(total / 3600);
   const m = Math.round((total % 3600) / 60);

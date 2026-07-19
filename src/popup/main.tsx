@@ -1,7 +1,7 @@
 import { render } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 import { myself, JiraAuthError } from '../lib/jira';
-import { getSettings } from '../lib/settings';
+import { getSettings, applyTheme } from '../lib/settings';
 import '../styles.css';
 
 function Popup() {
@@ -10,7 +10,8 @@ function Popup() {
 
   useEffect(() => {
     (async () => {
-      const { site } = await getSettings();
+      const { site, theme } = await getSettings();
+      applyTheme(theme);
       if (!site) {
         setStatus('Not set up yet — open the app to connect your Jira site.');
         return;

@@ -42,7 +42,9 @@ Working plan for the 2-week MVP. Check items off as they land.
       to Turkey-based individuals). Decide: foreign entity w/ Stripe vs Lemon
       Squeezy/Paddle (merchant of record). Then register the extension id and update
       `EXTPAY_ID`.
-- [ ] Publish site/ to GitHub Pages; fill support email in privacy.html + listing
+- [x] Publish site/ to GitHub Pages (gh-pages branch) — live at
+      https://cemayan.com/worklog-ledger/ (privacy: /worklog-ledger/privacy.html)
+- [ ] Fill support email in privacy.html + listing before CWS submit
 - [ ] Screenshots 1280×800 for CWS (calendar light/dark, report, export)
 - [ ] Submit to CWS early (manual review can take 3+ weeks)
 

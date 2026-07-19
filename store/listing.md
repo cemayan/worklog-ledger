@@ -55,7 +55,7 @@ Works with Jira Cloud. Not affiliated with Atlassian.
 - [ ] Icon 128×128 (public/icons/icon128.png — done)
 - [ ] Screenshots 1280×800: calendar (light), calendar (dark), report, export dialog
 - [ ] Small promo tile 440×280 (optional but boosts placement)
-- [ ] Privacy policy URL (GitHub Pages: site/privacy.html)
+- [x] Privacy policy URL: https://cemayan.com/worklog-ledger/privacy.html
 - [ ] Support email / site URL
 
 ## Before submitting

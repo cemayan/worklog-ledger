@@ -12,7 +12,7 @@
 /** TODO: set to the deployed worker URL (see worker/README.md). */
 const LICENSE_API = 'https://worklog-ledger-license.cemayan.workers.dev';
 
-const UPGRADE_URL = 'https://cemayan.com/worklog-ledger/#pricing';
+const UPGRADE_URL = 'https://worklogledger.cemayan.com/#pricing';
 
 export interface LicenseState {
   plan: 'trial' | 'free' | 'paid';

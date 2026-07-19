@@ -11,26 +11,39 @@ Working plan for the 2-week MVP. Check items off as they land.
 - [x] Write flow: "+ Log work" dialog (issue autocomplete, duration parser, start time,
       comment), staged drafts in `chrome.storage.local`, push bar with per-entry
       visible error handling
+- [x] Edit and delete existing worklogs (PUT/DELETE on the worklog endpoints)
+- [x] Copy last week / duplicate an entry onto another day (shared WorklogDialog,
+      duplicates staged as drafts)
+- [x] API-token fallback UI: settings panel (site, session/token auth, email + token),
+      "Open settings" CTA on auth errors incl. token expiry
+- [x] Loading skeleton, empty-week hint, per-day target progress bar (configurable
+      daily target, weekdays only)
+- [x] Basic keyboard navigation on the grid (←/→ between days with week wrap,
+      Enter = log work)
 
 ## Week 1 — remaining (free tier)
 
-- [ ] Edit and delete existing worklogs (PUT/DELETE on the worklog endpoints)
-- [ ] Copy last week / duplicate an entry onto another day
-- [ ] API-token fallback UI: settings panel (email + token), auto-offered when the
-      session check fails; handle token expiry (401 → prompt to re-enter)
-- [ ] Loading/empty states polish; total-per-day target indicator (e.g. 8h)
-- [ ] Basic keyboard navigation on the grid (arrows between days, Enter = log work)
+- (done — see above)
 
 ## Week 2 — paid tier + release
 
-- [ ] Report engine: date-range, entry-level aggregation grouped by client/project/epic/user
-- [ ] Client mapping (project → client) + hourly rates + billable flag (stored in
-      `chrome.storage.sync`)
-- [ ] Invoice-ready CSV/Excel export (hours × rate, audit-friendly layout)
-- [ ] ExtensionPay integration — free: calendar + report preview; paid: export + rates;
-      14-day reverse trial
-- [ ] Icons, Chrome Web Store listing (screenshots, description), static privacy policy
-      + landing page (GitHub Pages)
+- [x] Report engine: date-range, entry-level aggregation grouped by client/project/person
+      (epic grouping deferred; parentKey already fetched)
+- [x] Client mapping (project → client) + hourly rates + billable flag (stored in
+      `chrome.storage.sync`), default rate + currency
+- [x] Invoice-ready CSV export (hours × rate, entry-level, totals row, Excel-friendly
+      BOM/CRLF) — dedicated Excel .xlsx deferred
+- [x] ExtensionPay integration (code side) — `extpay` wired in `lib/license.ts` with
+      lazy import + cached-paid fallback, background worker, Upgrade buttons; reverse
+      trial 14 days full → export/rates lock
+- [x] Icons (16/48/128, generated from SVG), CWS listing draft (`store/listing.md`),
+      privacy policy + landing page (`site/`, ready for GitHub Pages)
+- [ ] BLOCKER: payment account — ExtensionPay needs a Stripe account (not available
+      to Turkey-based individuals). Decide: foreign entity w/ Stripe vs Lemon
+      Squeezy/Paddle (merchant of record). Then register the extension id and update
+      `EXTPAY_ID`.
+- [ ] Publish site/ to GitHub Pages; fill support email in privacy.html + listing
+- [ ] Screenshots 1280×800 for CWS (calendar light/dark, report, export)
 - [ ] Submit to CWS early (manual review can take 3+ weeks)
 
 ## Later (post-MVP, sales-driven)

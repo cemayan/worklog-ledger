@@ -62,6 +62,9 @@ Working plan for the 2-week MVP. Check items off as they land.
 
 ## While waiting for review (launch prep)
 
+- [ ] ON CWS APPROVAL: swap the landing hero CTA (site/index.html, TODO comment)
+      to the real store URL and republish gh-pages
+
 - [ ] Distribution hit list: unanswered "worklog report/export" questions on
       Atlassian Community; complaint threads in Jira Assistant GitHub issues
       (#426 silent upload, Tempo gap 2026-07-02, keyboard UX 2026-02) — draft

@@ -13,12 +13,6 @@ export default defineConfig({
       input: {
         popup: r('popup.html'),
         app: r('app.html'),
-        background: r('src/background.ts'),
-      },
-      output: {
-        // The service worker path in manifest.json must be stable.
-        entryFileNames: (chunk) =>
-          chunk.name === 'background' ? 'background.js' : 'assets/[name]-[hash].js',
       },
     },
   },

@@ -1,0 +1,13 @@
+name = "worklog-ledger-license"
+main = "src/index.js"
+compatibility_date = "2026-07-19"
+
+# Create with: wrangler kv namespace create LICENSES
+# then paste the generated id below.
+[[kv_namespaces]]
+binding = "LICENSES"
+id = "TODO"
+
+[vars]
+# Use https://sandbox-api.paddle.com while testing.
+PADDLE_API_BASE = "https://api.paddle.com"

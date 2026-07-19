@@ -5,6 +5,12 @@ import {
   normalizeSiteUrl,
   type AuthConfig,
 } from '../lib/settings';
+import {
+  getLicenseInfo,
+  activateLicense,
+  clearLicense,
+  openUpgradePage,
+} from '../lib/license';
 
 interface Props {
   onClose: () => void;
@@ -20,6 +26,39 @@ export function SettingsDialog({ onClose, onSaved }: Props) {
   const [token, setToken] = useState('');
   const [target, setTarget] = useState('8');
   const [error, setError] = useState<string>();
+  const [licEmail, setLicEmail] = useState('');
+  const [licActive, setLicActive] = useState<boolean>();
+  const [licBusy, setLicBusy] = useState(false);
+  const [licMessage, setLicMessage] = useState<string>();
+
+  useEffect(() => {
+    getLicenseInfo().then((info) => {
+      if (info?.email) {
+        setLicEmail(info.email);
+        setLicActive(info.paid);
+      }
+    });
+  }, []);
+
+  const activate = async () => {
+    setLicMessage(undefined);
+    setLicBusy(true);
+    try {
+      const active = await activateLicense(licEmail);
+      setLicActive(active);
+      setLicMessage(active ? 'License active — thank you!' : 'No active subscription found for this email.');
+    } catch (e) {
+      setLicMessage((e as Error).message);
+    }
+    setLicBusy(false);
+  };
+
+  const deactivate = async () => {
+    await clearLicense();
+    setLicEmail('');
+    setLicActive(undefined);
+    setLicMessage(undefined);
+  };
 
   useEffect(() => {
     getSettings().then((s) => {
@@ -144,6 +183,39 @@ export function SettingsDialog({ onClose, onSaved }: Props) {
             onInput={(e) => setTarget((e.target as HTMLInputElement).value)}
           />
         </label>
+
+        <div class="field-group">
+          <span class="field-title">License</span>
+          {licActive ? (
+            <p class="hint">
+              Active for <strong>{licEmail}</strong>
+              <button class="link" onClick={deactivate}>deactivate</button>
+            </p>
+          ) : (
+            <>
+              <div class="row">
+                <label>
+                  Purchase email
+                  <input
+                    type="email"
+                    placeholder="you@company.com"
+                    value={licEmail}
+                    onInput={(e) => setLicEmail((e.target as HTMLInputElement).value)}
+                  />
+                </label>
+                <button class="align-end" disabled={licBusy || !licEmail.includes('@')} onClick={activate}>
+                  {licBusy ? 'Checking…' : 'Activate'}
+                </button>
+              </div>
+              <p class="hint">
+                Bought the report plan? Enter the email you used at checkout.
+                No license yet?{' '}
+                <button class="link" onClick={() => openUpgradePage()}>See pricing</button>
+              </p>
+            </>
+          )}
+          {licMessage && <p class="hint">{licMessage}</p>}
+        </div>
 
         {error && <div class="error">{error}</div>}
 

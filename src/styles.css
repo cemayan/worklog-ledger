@@ -569,6 +569,10 @@ input:focus {
   color: var(--accent);
 }
 
+.dialog .row button.align-end {
+  align-self: flex-end;
+}
+
 /* Header tabs + plan chip */
 .tabs {
   display: flex;

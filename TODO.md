@@ -38,10 +38,13 @@ Working plan for the 2-week MVP. Check items off as they land.
       trial 14 days full → export/rates lock
 - [x] Icons (16/48/128, generated from SVG), CWS listing draft (`store/listing.md`),
       privacy policy + landing page (`site/`, ready for GitHub Pages)
-- [ ] BLOCKER: payment account — ExtensionPay needs a Stripe account (not available
-      to Turkey-based individuals). Decide: foreign entity w/ Stripe vs Lemon
-      Squeezy/Paddle (merchant of record). Then register the extension id and update
-      `EXTPAY_ID`.
+- [x] Payment provider decided: Paddle (merchant of record — works from Turkey,
+      wire payouts, no Stripe/PayPal needed). ExtensionPay/extpay removed; licensing
+      is now email-activation against a Cloudflare Worker (`worker/`) fed by Paddle
+      webhooks. Trial logic unchanged.
+- [ ] Paddle: finish seller onboarding (in progress), create $7/mo product, then:
+      deploy worker (see worker/README.md), set LICENSE_API in src/lib/license.ts,
+      wire Paddle.js checkout into site pricing section
 - [x] Publish site/ to GitHub Pages (gh-pages branch) — live at
       https://cemayan.com/worklog-ledger/ (privacy: /worklog-ledger/privacy.html)
 - [ ] Fill support email in privacy.html + listing before CWS submit

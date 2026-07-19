@@ -5,7 +5,7 @@
 Chrome extension for Jira Cloud: a fast weekly worklog calendar (free) plus a
 client-billing report layer — rates, billable flags, invoice-ready export (paid).
 
-**Website:** https://worklogledger.cemayan.com · **Status:** v0.1.0 in Chrome Web Store review
+**Website:** https://worklogledger.cemayan.com · **Status:** v0.1.0 in Chrome Web Store review · **License:** AGPL-3.0
 
 No server. Your data stays in your browser (`chrome.storage`). Auth rides your
 existing Jira session, with an API-token fallback.
@@ -33,3 +33,20 @@ After each rebuild, hit the reload icon on the extension card.
 1. Load `poc/` unpacked.
 2. Log in to your Jira Cloud site in a tab.
 3. Open the popup, enter the site URL, run both tests.
+
+## Privacy
+
+No backend, no analytics, no tracking. The extension talks only to your own Jira
+Cloud site; the single exception is a license check for the paid tier that sends
+just your purchase email. Details: [privacy policy](https://worklogledger.cemayan.com/privacy.html).
+
+## Contributing
+
+Issues and PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Security reports:
+[SECURITY.md](SECURITY.md) (please report privately).
+
+## License
+
+[AGPL-3.0](LICENSE). In short: use, read, modify and redistribute freely — but if
+you distribute a modified version (including as a browser extension), it must be
+open source under the same license.

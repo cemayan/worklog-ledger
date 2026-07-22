@@ -65,6 +65,13 @@ Working plan for the 2-week MVP. Check items off as they land.
 
 - [x] ON CWS APPROVAL: swap the landing hero CTA (site/index.html, TODO comment)
       to the real store URL and republish gh-pages — done 2026-07-22
+- [ ] INTERIM (2026-07-22): checkout paused (PADDLE_CLIENT_TOKEN set to
+      'TODO-paused' in site/index.html; real token in the comment above it) and
+      CWS trader status set to non-trader to hide the home address/phone.
+      Re-enable AFTER: şahıs şirketi + sanal ofis (Ankara) kurulup CWS trader
+      bilgileri yeni adres/0850 ile doğrulanınca — restore token, republish
+      gh-pages, flip trader back on. Update Paddle account to business + new
+      address too.
 
 - [ ] Distribution hit list: unanswered "worklog report/export" questions on
       Atlassian Community; complaint threads in Jira Assistant GitHub issues

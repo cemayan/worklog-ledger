@@ -46,10 +46,9 @@ Working plan for the 2-week MVP. Check items off as they land.
       pri_01kxxsjc7t1yjgjzdq25ms4wg4 ($7/mo), webhook ntfset_01kxxsss6v9m43bmnr773mpeae.
       Worker deployed at https://worklog-ledger-license.cemayan.workers.dev with
       KV + both secrets; LICENSE_API already points there.
-- [ ] Paddle: finish seller verification (KYC + website approval) — checkout won't
-      charge until Paddle approves the account
-- [ ] Paste the client-side token (Developer tools > Authentication > Client-side
-      tokens) into site/index.html PADDLE_CLIENT_TOKEN to enable the buy button
+- [x] Paddle: seller verification approved; checkout is live (confirmed 2026-07-22)
+- [x] Client-side token pasted into site/index.html PADDLE_CLIENT_TOKEN — buy
+      button enabled
 - [ ] Rotate the Paddle API key and the account password after setup (both were
       shared in chat)
 - [x] Publish site/ to GitHub Pages (gh-pages branch) — live at

@@ -5,7 +5,7 @@
 Chrome extension for Jira Cloud: a fast weekly worklog calendar (free) plus a
 client-billing report layer — rates, billable flags, invoice-ready export (paid).
 
-**Website:** https://worklogledger.cemayan.com · **Status:** v0.1.0 in Chrome Web Store review · **License:** AGPL-3.0
+**Website:** https://worklogledger.cemayan.com · **Install:** [Chrome Web Store](https://chromewebstore.google.com/detail/worklog-ledger-for-jira/gipfncpfikijehcefobfnklgcihmmjic) · **License:** AGPL-3.0
 
 No server. Your data stays in your browser (`chrome.storage`). Auth rides your
 existing Jira session, with an API-token fallback.

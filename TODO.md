@@ -59,11 +59,13 @@ Working plan for the 2-week MVP. Check items off as they land.
 - [x] SUBMITTED to Chrome Web Store for review — 2026-07-19, v0.1.0, developer
       account under the new product Gmail; Search Console domain verified.
       Review may take days to 3+ weeks.
+- [x] PUBLISHED on Chrome Web Store — 2026-07-22, v0.1.0:
+      https://chromewebstore.google.com/detail/worklog-ledger-for-jira/gipfncpfikijehcefobfnklgcihmmjic
 
 ## While waiting for review (launch prep)
 
-- [ ] ON CWS APPROVAL: swap the landing hero CTA (site/index.html, TODO comment)
-      to the real store URL and republish gh-pages
+- [x] ON CWS APPROVAL: swap the landing hero CTA (site/index.html, TODO comment)
+      to the real store URL and republish gh-pages — done 2026-07-22
 
 - [ ] Distribution hit list: unanswered "worklog report/export" questions on
       Atlassian Community; complaint threads in Jira Assistant GitHub issues
